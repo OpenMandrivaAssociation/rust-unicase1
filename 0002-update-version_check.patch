@@ -1,0 +1,34 @@
+From 90597abf88a2be1ade1f9e1914daaa982d705d11 Mon Sep 17 00:00:00 2001
+From: Sean McArthur <sean@seanmonstar.com>
+Date: Tue, 12 Nov 2019 11:20:08 -0800
+Subject: [PATCH 2/2] update version_check
+
+(cherry picked from commit 4788cba472f5fd5291cd6f0a3e564ee2ca502e04)
+---
+ build.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/build.rs b/build.rs
+index 4483ec8..e62b5d3 100644
+--- a/build.rs
++++ b/build.rs
+@@ -1,10 +1,14 @@
+ extern crate version_check as rustc;
+ 
+ fn main() {
+-    if rustc::is_min_version("1.5.0").map(|(is_min, _)| is_min).unwrap_or(true) {
++    if is_rustc_at_least("1.5.0") {
+         println!("cargo:rustc-cfg=__unicase__iter_cmp");
+     }
+-    if rustc::is_min_version("1.13.0").map(|(is_min, _)| is_min).unwrap_or(true) {
++    if is_rustc_at_least("1.13.0") {
+         println!("cargo:rustc-cfg=__unicase__default_hasher");
+     }
+ }
++
++fn is_rustc_at_least(v: &str) -> bool {
++    rustc::is_min_version(v).unwrap_or(true)
++}
+-- 
+2.24.0
+
